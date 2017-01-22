@@ -11,7 +11,7 @@ RSpec.describe "CitiesApis::", type: :request do
     before(:each) { City.delete_all }
     after(:each) { City.delete_all }
 
-    it "when create a city then it stored in RDBMS" do
+    it "when create a city then it is stored in RDBMS" do
       city = City.create(name:"Baltimore")
       expect(City.find(city.id).name).to eq("Baltimore")
     end
@@ -23,14 +23,16 @@ RSpec.describe "CitiesApis::", type: :request do
       expect(response).to have_http_status(:ok)
       expect(response_body.count).to eq(1)
       expect(response_body.first["name"]).to eq("Baltimore")
+      expect(response_body.first.keys).to contain_exactly("id", "name", "created_at", "updated_at", "url")
     end
 
-    it "when api/city/:id is invoked with Baltimore id then Baltimore is returned" do
+    it "when api/cities/:id is invoked with Baltimore id then Baltimore is returned" do
       city = City.create(name:"Baltimore")
       expect(city_path(city.id)).to eq("/api/cities/#{city.id}")
       get city_path(city.id)
       expect(response).to have_http_status(:ok)
       expect(response_body["name"]).to eq("Baltimore")
+      expect(response_body.keys).to contain_exactly("id", "name", "created_at", "updated_at", "url")
     end
 
   end
