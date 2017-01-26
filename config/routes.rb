@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     resources :cities, except: [:new, :edit, :update, :destroy, :create]
     resources :states, except: [:new, :edit, :update, :destroy, :create]
   end
-  get '/home' => 'home#index'
-  get '/home#' => 'home#index'
-  root 'home#index'
+  get '/ui' => 'ui#index'
+  get '/ui#' => 'ui#index'
+  root 'ui#index'
 end
