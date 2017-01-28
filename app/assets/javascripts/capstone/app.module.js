@@ -1,4 +1,4 @@
 (function() {
   'use-strict';
-  angular.module("capstone",["ui.router"]);
+  angular.module("capstone",["ui.router", "capstone.cities"]);
 })();
