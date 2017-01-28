@@ -1,0 +1,40 @@
+<div>
+  <h3>Cities</h3>
+  <span>(from capstone/cities/cities.html)</span>
+  <br>
+  <br>
+  <div class="container">
+    <form class="form-horizontal">
+      <div class="form-group">
+        <div class="col-sm-2">
+          <input class="form-control"
+                  name="name"
+                  ng-model="citiesVM.city.name"
+                  required="required"
+                  placeholder="Insert a city name"
+                  ng-change="changeName()"/>
+        </div>
+        <button class="btn btn-default"
+                ng-if="!citiesVM.city.id"
+                 type="submit"
+                 ng-click="citiesVM.create()">Create
+        </button>
+        <div ng-if="citiesVM.city.id">
+          <button class="btn btn-default"
+                  type="submit"
+                  ng-click="citiesVM.update()">Update
+          </button>
+          <button class="btn btn-default"
+                  type="submit"
+                  ng-click="citiesVM.remove()">Delete
+          </button>
+        </div>
+      </div>
+    </form>
+    <ul>
+      <li ng-repeat="city in citiesVM.cities | orderBy:'name'">
+        <a ng-click="citiesVM.edit(city)">{{city.name}}</a>
+      </li>
+    </ul>
+  </div>
+</div>
