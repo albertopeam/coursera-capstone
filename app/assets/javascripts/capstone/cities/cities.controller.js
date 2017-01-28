@@ -19,6 +19,7 @@
 
       function newCity() {
         vm.city = new City();
+        vm.cities = City.query();
       }
 
       function create() {
