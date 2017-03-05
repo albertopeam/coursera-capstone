@@ -7,7 +7,7 @@ class Image < ActiveRecord::Base
 
   scope :not_belonging_to_a_user, -> {
     if !User.where.not(image_id:nil).blank?
-      where('Images.id not in (?)', User.where.not(image_id:nil).pluck(:id))
+      where('Images.id not in (?)', User.where.not(image_id:nil).pluck(:image_id))
     end
   }
 
