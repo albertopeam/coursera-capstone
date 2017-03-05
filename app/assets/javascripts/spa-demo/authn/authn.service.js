@@ -57,11 +57,11 @@
           deferred.resolve(response);
         },
         function(response){
-          var formatted_errors = { errors: { 
-            full_messages: response.errors 
+          var formatted_errors = { errors: {
+            full_messages: response.errors
             }
           };
-          console.log("login failure", response);            
+          console.log("login failure", response);
           deferred.reject(formatted_errors);
         });
 
@@ -79,7 +79,7 @@
         function(response){
           service.user = null;
           console.log("logout failure", response);
-          alert(response.status + ":" + response.statusText);            
+          alert(response.status + ":" + response.statusText);
         });
       return result;
     }
