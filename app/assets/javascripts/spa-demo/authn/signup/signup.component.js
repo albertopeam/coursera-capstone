@@ -12,7 +12,7 @@
   templateUrl.$inject = ["spa-demo.config.APP_CONFIG"];
   function templateUrl(APP_CONFIG) {
     return APP_CONFIG.authn_signup_html;
-  }    
+  }
 
   SignupController.$inject = ["$scope","$state","spa-demo.authn.Authn"];
   function SignupController($scope, $state, Authn) {
@@ -31,12 +31,13 @@
       Authn.signup(vm.signupForm).then(
         function(response){
           vm.id = response.data.data.id;
-          console.log("signup complete", response.data, vm);          
+          console.log("signup complete", response.data, vm);
+          console.log("signup complete headers", response.headers);    
           $state.go("home");
         },
         function(response){
           vm.signupForm["errors"]=response.data.errors;
-          console.log("signup failure", response, vm);          
+          console.log("signup failure", response, vm);
         }
       );
     }
