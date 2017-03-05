@@ -35,7 +35,6 @@ class ImagesController < ApplicationController
   end
 
   def create
-    request.headers.each { |key, value|  puts "key: #{key} = value: #{value}"}
     authorize Image
     @image = Image.new(image_params)
     @image.creator_id=current_user.id
@@ -45,7 +44,7 @@ class ImagesController < ApplicationController
         original=ImageContent.new(image_content_params)
         contents=ImageContentCreator.new(@image, original).build_contents
         contents.save!
-        if is_user_image?(user_params)
+        if is_user_image?
           current_user.image_id = @image.id
           current_user.save!
         else
@@ -113,8 +112,9 @@ class ImagesController < ApplicationController
       Rails.logger.debug exception.message
     end
 
-    def is_user_image?(user_params)
-      puts "has user_id: #{user_params.has_key?(:user_id)}"
-      user_params.has_key?(:id)
+    def is_user_image?
+      puts "has user_id: #{params.has_key?(:user_id)}"
+      return params[:user][:id].present? if params[:user].present?
+      false
     end
 end
