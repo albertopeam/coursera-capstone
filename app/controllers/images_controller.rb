@@ -113,7 +113,6 @@ class ImagesController < ApplicationController
     end
 
     def is_user_image?
-      puts "has user_id: #{params.has_key?(:user_id)}"
       return params[:user][:id].present? if params[:user].present?
       false
     end
