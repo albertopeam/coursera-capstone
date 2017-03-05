@@ -42,7 +42,7 @@
             console.log("checkUser: " , value);
             if (value.content_url !== undefined && value.content_url != null) {
               vm.user_image_show = true;
-              vm.user_image_url = value.content_url;
+              vm.user_image_url = value.content_url + "?width=50";
             }else{
               vm.user_image_show = false;
               vm.user_image_url = null;
