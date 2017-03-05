@@ -35,6 +35,7 @@ class ImagesController < ApplicationController
   end
 
   def create
+    request.headers.each { |key, value|  puts "key: #{key} = value: #{value}"}
     authorize Image
     @image = Image.new(image_params)
     @image.creator_id=current_user.id
@@ -44,7 +45,7 @@ class ImagesController < ApplicationController
         original=ImageContent.new(image_content_params)
         contents=ImageContentCreator.new(@image, original).build_contents
         contents.save!
-        if is_user_image?(image_content_params)
+        if is_user_image?(user_params)
           current_user.image_id = @image.id
           current_user.save!
         else
@@ -91,7 +92,11 @@ class ImagesController < ApplicationController
       params.require(:image_content).tap { |ic|
         ic.require(:content_type)
         ic.require(:content)
-      }.permit(:content_type, :content, :user_id)
+      }.permit(:content_type, :content)
+    end
+
+    def user_params
+      params.require(:user).permit(:id)
     end
 
     def contents_error exception
@@ -108,8 +113,8 @@ class ImagesController < ApplicationController
       Rails.logger.debug exception.message
     end
 
-    def is_user_image?(img_content_params)
-      puts "has user_id: #{img_content_params.has_key?(:user_id)}"
-      img_content_params.has_key?(:user_id)
+    def is_user_image?(user_params)
+      puts "has user_id: #{user_params.has_key?(:user_id)}"
+      user_params.has_key?(:id)
     end
 end

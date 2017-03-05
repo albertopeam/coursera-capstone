@@ -61,7 +61,7 @@
                                    "spa-demo.subjects.ImageLinkableThing",
                                    ];
   function ImageEditorController($scope, $q, $state, $stateParams,
-                                 Authz, DataUtils, Image, ImageThing,ImageLinkableThing) {
+                                 Authz, DataUtils, Image, ImageThing, ImageLinkableThing) {
     var vm=this;
     vm.selected_linkables=[];
     vm.create = create;

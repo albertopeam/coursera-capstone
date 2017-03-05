@@ -14,8 +14,12 @@
     return APP_CONFIG.authn_signup_html;
   }
 
-  SignupController.$inject = ["$scope","$state","spa-demo.authn.Authn", "spa-demo.layout.DataUtils"];
-  function SignupController($scope, $state, Authn, DataUtils) {
+  SignupController.$inject = ["$scope",
+                              "$state",
+                              "spa-demo.authn.Authn",
+                              "spa-demo.layout.DataUtils",
+                              "spa-demo.subjects.Image"];
+  function SignupController($scope, $state, Authn, DataUtils, Image) {
     var vm=this;
     vm.setImageContent = setImageContent;
     vm.signupForm = {}
@@ -37,7 +41,7 @@
           console.log("signup complete", response.data.data, vm);
           console.log("signup complete headers", response.config.headers);
           if (hasImage()) {
-            uploadImage(response.config.headers, response.data.data.id);
+            uploadImage(response.headers, response.data.data.id);
           }else{
             $state.go("home");
           }
@@ -51,11 +55,25 @@
 
     function uploadImage(headers, userId){
         console.log("headers: " , headers);
-        console.log("header: ", headers["access-token"]);
+        console.log("header: ", headers("access-token"));
         console.log("userId: ", userId);
-        //TODO: upload
-        //TODO: image file not required
-        $state.go("home");
+        var image = new Image();
+        image.user = {};
+        image.user.id = userId;
+        image.image_content = {};        
+        image.image_content.content_type = "image/jpeg"
+        image.image_content.content = vm.image_content.content;
+        image.$save().then(
+          function(result){
+            console.log("uploadImage: ", result);
+            $state.go("home");
+            vm.image_content = null;
+          },
+          function(error){
+            console.log("uploadImage error: ", error);
+            $state.go("home");
+            vm.image_content = null;
+          });
     }
 
     function setImageContent(dataUri) {
