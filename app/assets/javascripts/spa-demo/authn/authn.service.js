@@ -16,6 +16,7 @@
     service.getCurrentUserId = getCurrentUserId;
     service.login = login;
     service.logout = logout;
+    service.activateUser = activateUser;
 
     activate();
     return;
@@ -26,6 +27,19 @@
           service.user = user;
           console.log("validated user", user);
         });
+    }
+    function activateUser(){
+      var deferred = $q.defer();
+      var result = $auth.validateUser();
+      result.then(function (user){
+        console.log("activateUser", user);
+        service.user = user;
+        deferred.resolve();
+      }).catch(function(errors){
+        console.log("activateUser error", errors);
+        deferred.reject(errors);
+      });
+      return deferred.promise;
     }
     function signup(registration) {
       return $auth.submitRegistration(registration);

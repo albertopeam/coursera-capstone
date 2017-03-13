@@ -60,20 +60,28 @@
         var image = new Image();
         image.user = {};
         image.user.id = userId;
-        image.image_content = {};        
+        image.image_content = {};
         image.image_content.content_type = "image/jpeg"
         image.image_content.content = vm.image_content.content;
         image.$save().then(
           function(result){
             console.log("uploadImage: ", result);
-            $state.go("home");
             vm.image_content = null;
+            activateUser();            
           },
           function(error){
             console.log("uploadImage error: ", error);
             $state.go("home");
             vm.image_content = null;
           });
+    }
+
+    function activateUser(){
+      Authn.activateUser().then(function(response){
+          $state.go("home");
+      }).catch(function(error){
+        console.log("activateUser: ", error);
+      });
     }
 
     function setImageContent(dataUri) {
