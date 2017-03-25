@@ -13,6 +13,26 @@ class ImagesController < ApplicationController
     @images = ImagePolicy.merge(@images)
   end
 
+  #TODO: distance
+  #TODO: test with params
+  def search
+    authorize Image, :search
+    point = Point.new(params[:lng].to_f, params[:lat].to_f)
+    miles = params[:miles] ? params[:miles].to_f : nil
+    ids = params[:include_ids]
+
+    last_modified = Image.last_modified
+    state="#{request.headers['QUERY_STRING']}:#{last_modified}"
+    #use eTag versus last_modified -- ng-token-auth munges if-modified-since
+    eTag="#{Digest::MD5.hexdigest(state)}"
+
+    @images = Image.within_range(point, miles).include_ids(ids)
+    expires_in 1.minutes, :public=>true
+    if stale? etag: eTag
+      render "images/index"
+    end
+  end
+
   def show
     authorize @image
     images = policy_scope(Image.where(:id=>@image.id))
@@ -22,7 +42,7 @@ class ImagesController < ApplicationController
   def content
     result=ImageContent.image(@image).smallest(params[:width],params[:height]).first
     if result
-      expires_in 1.year, :public=>true 
+      expires_in 1.year, :public=>true
       if stale? result
         options = { type: result.content_type,
                     disposition: "inline",
@@ -43,7 +63,7 @@ class ImagesController < ApplicationController
       if @image.save
         original=ImageContent.new(image_content_params)
         contents=ImageContentCreator.new(@image, original).build_contents
-        if (contents.save!) 
+        if (contents.save!)
           role=current_user.add_role(Role::ORGANIZER, @image)
           @image.user_roles << role.role_name
           role.save!
@@ -96,9 +116,9 @@ class ImagesController < ApplicationController
       Rails.logger.debug exception
     end
 
-    def mongoid_validation_error(exception) 
+    def mongoid_validation_error(exception)
       payload = { errors:exception.record.errors.messages
-                     .slice(:content_type,:content,:full_messages) 
+                     .slice(:content_type,:content,:full_messages)
                      .merge(full_messages:["unable to create image contents"])}
       render :json=>payload, :status=>:unprocessable_entity
       Rails.logger.debug exception.message

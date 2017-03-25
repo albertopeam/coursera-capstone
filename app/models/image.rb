@@ -11,6 +11,20 @@ class Image < ActiveRecord::Base
               mapping: [%w(lng lng), %w(lat lat)]
 
   acts_as_mappable
+
+  scope :within_range, ->(origin, limit=nil) {
+    scope = by_distance(origin: origin, reverse: "asc")
+    scope = scope.within(limit,origin: origin) if limit    
+    return scope
+  }
+  scope :include_ids, ->(ids){
+    where(id: ids) if ids
+  }
+
+  def Image.last_modified
+    Image.maximum(:updated_at)
+  end
+
   def to_lat_lng
     Geokit::LatLng.new(lat,lng)
   end
