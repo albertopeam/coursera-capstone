@@ -13,12 +13,12 @@ class Image < ActiveRecord::Base
   acts_as_mappable
 
   scope :within_range, ->(origin, limit=nil) {
-    scope = by_distance(origin: origin, reverse: "asc")
-    scope = scope.within(limit,origin: origin) if limit    
+    scope = by_distance(origin: origin, reverse: false) #geokit sort by distance
+    scope = scope.within(limit,origin: origin) if limit #find from an origin with limit miles
     return scope
   }
   scope :include_ids, ->(ids){
-    where(id: ids) if ids
+    where(id: ids) if ids.present?
   }
 
   def Image.last_modified
