@@ -1,0 +1,7 @@
+<div class="col-md-2">
+  <select ng-options="type.name for type in $ctrl.types"
+          ng-model="selectedType"
+          ng-change="changeSelectedType(selectedType)">
+          <option value="" disabled>Please select one</option>
+  </select>
+</div>

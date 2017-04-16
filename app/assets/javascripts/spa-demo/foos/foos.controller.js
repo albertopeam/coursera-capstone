@@ -14,7 +14,7 @@
       vm.edit   = edit;
       vm.create = create;
       vm.update = update;
-      vm.remove = remove;      
+      vm.remove = remove;
 
       activate();
       return;
@@ -29,10 +29,10 @@
       }
       function handleError(response) {
         console.log(response);
-      } 
+      }
       function edit(object) {
         console.log("selected", object);
-        vm.foo = object;        
+        vm.foo = object;
       }
 
       function create() {
@@ -43,7 +43,7 @@
             vm.foos.push(vm.foo);
             newFoo();
           })
-          .catch(handleError);        
+          .catch(handleError);
       }
 
       function update() {
@@ -52,7 +52,7 @@
           .then(function(response){
             //console.log(response);
         })
-        .catch(handleError);        
+        .catch(handleError);
       }
 
       function remove() {
@@ -66,7 +66,7 @@
             //replace edit area with prototype instance
             newFoo();
           })
-          .catch(handleError);                
+          .catch(handleError);
       }
 
 
@@ -75,8 +75,8 @@
           if (elements[i].id == element.id) {
             elements.splice(i,1);
             break;
-          }        
-        }        
-      }      
+          }
+        }
+      }
   }
 })();
