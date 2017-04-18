@@ -13,10 +13,11 @@
     return APP_CONFIG.types_html;
   }
 
-  TypesController.$inject = ['$scope', "spa-demo.types.Type"];
-  function TypesController($scope, Type) {
+  TypesController.$inject = ['$scope', "spa-demo.types.Type", "spa-demo.subjects.Thing"];
+  function TypesController($scope, Type, Thing) {
     var vm = this;
     vm.types = [];
+    vm.things = [];
     vm.selectedType = null;
     $scope.changeSelectedType = selectedTypeChanged;
 
@@ -36,10 +37,20 @@
         });
     }
 
-
     function selectedTypeChanged(selected){
-      console.log("selectedTypeChanged", selected);
-      //TODO: load things for type: things::search/type=id
+      search(selected);
     }
+
+    function search(type){
+      var params = {type_id:type.id};
+      Thing.search(params).$promise
+        .then(function(response){
+          vm.things = response;
+        })
+        .catch(function(error){
+          console.log("things search error: ", error);
+        });
+    }
+
   }
 })();
