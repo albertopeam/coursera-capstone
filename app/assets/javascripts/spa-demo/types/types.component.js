@@ -47,14 +47,18 @@
       Thing.search(params).$promise
         .then(function(response){
           vm.things = response;
-        })
-        .catch(function(error){
+        }).catch(function(error){
           console.log("things search error: ", error);
         });
     }
 
     function selectThing(thing){
-      console.log("selectThing: ", thing);
+      Thing.get({id:thing.id}).$promise
+        .then(function(response){
+          console.log("selectThing: ", response.images);
+        }).catch(function(error){
+          console.log("selectThing error: ", error);
+        });
     }
 
   }
