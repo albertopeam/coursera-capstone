@@ -11,4 +11,8 @@ class Thing < ActiveRecord::Base
   scope :with_type, ->(type_id) {
     where(type_id: type_id)
   }
+
+  def images
+    thing_images.collect { |ti| ti.image }
+  end
 end

@@ -7,7 +7,9 @@
 
   TypeService.$inject = ["$resource","spa-demo.config.APP_CONFIG"];
   function TypeService($resource, APP_CONFIG) {
-    var service = $resource(APP_CONFIG.server_url + "/api/types");
+    var service = $resource(APP_CONFIG.server_url + "/api/types",{},{
+      query: { cache:false, isArray:true }
+    });
     return service;
   }
 })();
