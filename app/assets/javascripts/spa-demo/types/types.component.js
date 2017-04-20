@@ -19,6 +19,7 @@
     vm.types = [];
     vm.things = [];
     vm.selectedType = null;
+    vm.clickThing = selectThing;
     $scope.changeSelectedType = selectedTypeChanged;
 
     activate();
@@ -50,6 +51,10 @@
         .catch(function(error){
           console.log("things search error: ", error);
         });
+    }
+
+    function selectThing(thing){
+      console.log("selectThing: ", thing);
     }
 
   }
