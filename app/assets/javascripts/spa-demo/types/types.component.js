@@ -13,8 +13,11 @@
     return APP_CONFIG.types_html;
   }
 
-  TypesController.$inject = ['$scope', "spa-demo.types.Type", "spa-demo.subjects.Thing"];
-  function TypesController($scope, Type, Thing) {
+  TypesController.$inject = ['$scope',
+                              "spa-demo.types.Type",
+                              "spa-demo.subjects.Thing",
+                              "spa-demo.types.SelectedThing"];
+  function TypesController($scope, Type, Thing, SelectedThing) {
     var vm = this;
     vm.types = [];
     vm.things = [];
@@ -56,6 +59,7 @@
       Thing.get({id:thing.id}).$promise
         .then(function(response){
           console.log("selectThing: ", response.images);
+          SelectedThing.setSelectedThing(response);
         }).catch(function(error){
           console.log("selectThing error: ", error);
         });
