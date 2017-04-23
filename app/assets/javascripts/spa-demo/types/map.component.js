@@ -95,6 +95,9 @@
 
 
     function displayImage(image) {
+      if (image.position === null) {
+        return;
+      }
       var markerOptions = {
         position: {
           lng: image.position.lng,
