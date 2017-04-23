@@ -4,7 +4,7 @@
   angular
     .module("spa-demo.types")
     .component("sdImagesMap", {
-      template: "<div class='image-map col-sm-10 col-md-10 col-lg-10' id='map'></div>",
+      template: "<div class='image-map col-sm-12 col-md-12 col-lg-12' id='map'></div>",
       controller: ImagesMapController,
       bindings: {
         zoom: "@"
