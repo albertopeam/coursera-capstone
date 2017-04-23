@@ -78,7 +78,7 @@
     function initializeMap(element, position) {
       vm.map = new Map(element, {
         center: position,
-        zoom: vm.zoom || 10,
+        zoom: vm.zoom || 18,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       });
       vm.map.clearMarkers();
