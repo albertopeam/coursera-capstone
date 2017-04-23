@@ -4,8 +4,12 @@ class ThingsController < ApplicationController
   before_action :set_thing, only: [:show, :update, :destroy]
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   wrap_parameters :thing, include: ["name", "description", "notes"]
-  after_action :verify_authorized
+  after_action :verify_authorized, except: :search
   after_action :verify_policy_scoped, only: [:index]
+
+  def search
+    @things = Thing.with_type(search_params[:type_id])
+  end
 
   def index
     authorize Thing
@@ -64,5 +68,11 @@ class ThingsController < ApplicationController
       params.require(:thing).tap {|p|
           p.require(:name) #throws ActionController::ParameterMissing
         }.permit(:name, :description, :notes)
+    end
+
+    def search_params
+      params.tap { |p|
+        p.require(:type_id)
+      }.permit(:type_id)
     end
 end
